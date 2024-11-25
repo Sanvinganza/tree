@@ -9,7 +9,7 @@ export const Delete = ({ nodeId, name }: { nodeId: number; name: string }) => {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  return (
+  return name !== "Root" ? (
     <>
       <IconButton onClick={() => setIsOpenModal(true)}>
         <DeleteForeverIcon sx={{ color: "red" }} />
@@ -21,5 +21,5 @@ export const Delete = ({ nodeId, name }: { nodeId: number; name: string }) => {
         setOpen={setIsOpenModal}
       />
     </>
-  );
+  ) : null;
 };

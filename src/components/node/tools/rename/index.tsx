@@ -6,7 +6,7 @@ import { RenameModal } from "./renameModal";
 export const Rename = ({ nodeId, name }: { nodeId: number; name: string }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  return (
+  return name !== "Root" ? (
     <>
       <IconButton onClick={() => setIsOpenModal(true)}>
         <EditOutlinedIcon />
@@ -18,5 +18,5 @@ export const Rename = ({ nodeId, name }: { nodeId: number; name: string }) => {
         setOpen={setIsOpenModal}
       />
     </>
-  );
+  ) : null;
 };
