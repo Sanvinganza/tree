@@ -1,12 +1,9 @@
 import { IconButton } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useState } from "react";
-import { EditModal } from "./editModal";
+import { RenameModal } from "./renameModal";
 
-export const Edit = ({ nodeId, name }: { nodeId: number; name: string }) => {
-  // api.user.tree.node.edit
-  // params:  nodeId, treeName
-
+export const Rename = ({ nodeId, name }: { nodeId: number; name: string }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
@@ -14,7 +11,7 @@ export const Edit = ({ nodeId, name }: { nodeId: number; name: string }) => {
       <IconButton onClick={() => setIsOpenModal(true)}>
         <EditOutlinedIcon />
       </IconButton>
-      <EditModal
+      <RenameModal
         name={name}
         nodeId={nodeId}
         open={isOpenModal}

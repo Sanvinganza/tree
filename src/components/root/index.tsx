@@ -1,43 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Node } from "../node";
+import { useQuery } from "react-query";
+import { getTree } from "../../api/getTree";
 
 export const Root = () => {
-  const [isSelected, setIsSelected] = useState(0);
+  const [isSelectedNodeId, setIsSelectedNodeId] = useState(0);
 
-  useEffect(() => {}, []);
+  const { data } = useQuery("tree", getTree);
 
-  const marginLeft = 0;
-
-  const data = {
-    id: 20603,
-    name: "{AB004797-569F-44A5-8683-2FC908AC129F}",
-    children: [
-      {
-        id: 20668,
-        name: "INSERT TO",
-        children: [
-          {
-            id: 20669,
-            name: "second",
-            children: [],
-          },
-        ],
-      },
-      {
-        id: 20666,
-        name: "KIRA",
-        children: [],
-      },
-    ],
-  };
-
-  return (
+  return data ? (
     <Node
       children={data.children}
       id={data.id}
       name={"Root"}
-      isSelected={true}
-      marginLeft={marginLeft}
+      isSelectedNodeId={isSelectedNodeId}
+      setIsSelectedNodeId={setIsSelectedNodeId}
     />
-  );
+  ) : null;
 };

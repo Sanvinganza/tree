@@ -6,6 +6,9 @@ import {
   DialogTitle,
 } from "@mui/material";
 
+import { useMutation, useQueryClient } from "react-query";
+import { deleteNode } from "../../../../../api/deleteNode";
+
 export type TDeleteModalProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -19,14 +22,21 @@ export const DeleteModal = ({
   nodeId,
   name,
 }: TDeleteModalProps) => {
-  // api.user.tree.node.delete
-  // params: nodeId, treeName
-
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleAdd = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation<any, Error>(() => deleteNode(nodeId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("tree");
+    },
+  });
+
+  const handleDelete = () => {
+    mutation.mutate();
+
     setOpen(false);
   };
 
@@ -42,7 +52,11 @@ export const DeleteModal = ({
         <Button variant="outlined" onClick={handleClose}>
           CANCEL
         </Button>
-        <Button color="error" variant="contained" onClick={handleAdd} autoFocus>
+        <Button
+          color="error"
+          variant="contained"
+          onClick={handleDelete}
+          autoFocus>
           DELETE
         </Button>
       </DialogActions>

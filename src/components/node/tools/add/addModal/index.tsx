@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 
 import { useRef } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { createNode } from "../../../../../api/createNode";
 
 export type TAddModalProps = {
   open: boolean;
@@ -16,17 +18,35 @@ export type TAddModalProps = {
 };
 
 export const AddModal = ({ open, setOpen, nodeId }: TAddModalProps) => {
-  // api.user.tree.node.create
-  // params: parentNodeId, nodeId, treeName
-
   const ref = useRef<HTMLInputElement | null>();
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation<
+    any,
+    Error,
+    {
+      nodeName: string;
+    }
+  >(
+    async ({ nodeName }) => {
+      return await createNode(nodeId, nodeName);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("tree");
+      },
+    }
+  );
+
   const handleAdd = () => {
-    console.log(ref.current?.value);
+    mutation.mutate({
+      nodeName: ref.current?.value || "",
+    });
 
     setOpen(false);
   };

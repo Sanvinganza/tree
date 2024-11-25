@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 
 import { useRef } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { renameNode } from "../../../../../api/renameNode";
 
 export type TEditModalProps = {
   open: boolean;
@@ -16,18 +18,36 @@ export type TEditModalProps = {
   name: string;
 };
 
-export const EditModal = ({ open, setOpen, nodeId, name }: TEditModalProps) => {
-  // api.user.tree.node.edit
-  // params: nodeId, treeName, newNodeName
-
+export const RenameModal = ({ open, setOpen, nodeId }: TEditModalProps) => {
   const ref = useRef<HTMLInputElement | null>();
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleAdd = () => {
-    console.log(ref.current?.value);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation<
+    any,
+    Error,
+    {
+      newNodeName: string;
+    }
+  >(
+    async ({ newNodeName }) => {
+      return await renameNode(nodeId, newNodeName);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("tree");
+      },
+    }
+  );
+
+  const handleRename = () => {
+    mutation.mutate({
+      newNodeName: ref.current?.value || "",
+    });
 
     setOpen(false);
   };
@@ -57,7 +77,11 @@ export const EditModal = ({ open, setOpen, nodeId, name }: TEditModalProps) => {
         <Button variant="outlined" onClick={handleClose}>
           CANCEL
         </Button>
-        <Button color="info" variant="contained" onClick={handleAdd} autoFocus>
+        <Button
+          color="info"
+          variant="contained"
+          onClick={handleRename}
+          autoFocus>
           RENAME
         </Button>
       </DialogActions>

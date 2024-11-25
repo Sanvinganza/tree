@@ -10,44 +10,59 @@ export type TNode = {
   children: TNode[];
 };
 
-type TNodeProps = TNode & { isSelected: boolean; marginLeft: number };
+type TNodeProps = TNode & {
+  setIsSelectedNodeId: (isSelectedNodeId: number) => void;
+  isSelectedNodeId: number;
+};
 
 export const Node = memo(
-  ({ id, name, children, isSelected = false, marginLeft }: TNodeProps) => {
-    marginLeft = marginLeft + 1;
-
+  ({
+    id,
+    name,
+    children,
+    isSelectedNodeId,
+    setIsSelectedNodeId,
+  }: TNodeProps) => {
     const [isShowChild, setIsShowChild] = useState(false);
 
     const container: CSSProperties = {
-      marginLeft: marginLeft + "em",
+      marginLeft: "1em",
     };
 
     const main: CSSProperties = {
       display: "flex",
       alignItems: "center",
+      backgroundColor: isSelectedNodeId === id ? "#eeeff8" : "transparent",
     };
 
     return (
       <Box sx={container}>
-        <Box sx={main}>
+        <Box
+          sx={main}
+          onClick={() => {
+            if (isSelectedNodeId !== id) {
+              setIsSelectedNodeId(id);
+            }
+          }}>
           <DropdownButton
             setIsShowChild={setIsShowChild}
             isShowChild={isShowChild}
             childrenLength={children.length}
           />
-          <Typography>{name}</Typography>
-          <Tools nodeId={id} isSelected={isSelected} name={name} />
+          <Typography sx={{ padding: "8px 0" }}>{name}</Typography>
+          <Tools nodeId={id} isSelected={isSelectedNodeId === id} name={name} />
         </Box>
 
         <Box>
           {isShowChild
             ? children.map(({ id, name, children }: TNode) => (
                 <Node
+                  key={id}
                   children={children}
                   id={id}
                   name={name}
-                  isSelected={true}
-                  marginLeft={marginLeft}
+                  isSelectedNodeId={isSelectedNodeId}
+                  setIsSelectedNodeId={setIsSelectedNodeId}
                 />
               ))
             : null}
