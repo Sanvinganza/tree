@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { Box, Typography } from "@mui/material";
+
+import { CSSProperties, memo, useState } from "react";
+import { Tools } from "./tools";
+import { DropdownButton } from "./dropdownButton";
 
 export type TNode = {
   id: number;
@@ -6,28 +10,49 @@ export type TNode = {
   children: TNode[];
 };
 
-export const Node = ({ node, onEdit }) => {
-  const [isEditing, setEditing] = useState(false);
-  const [value, setValue] = useState(node.value);
+type TNodeProps = TNode & { isSelected: boolean; marginLeft: number };
 
-  const handleEdit = () => {
-    onEdit(node.id, value);
-    setEditing(false);
-  };
+export const Node = memo(
+  ({ id, name, children, isSelected = false, marginLeft }: TNodeProps) => {
+    marginLeft = marginLeft + 1;
 
-  return (
-    <div>
-      <div>
-        <span>{node.name}</span>
-        <button onClick={() => setEditing(true)}>Редактировать</button>
-      </div>
-      {node.children && node.children.length > 0 && (
-        <div style={{ paddingLeft: "20px" }}>
-          {node.children.map((child: TNode) => (
-            <Node key={child.id} node={child} onEdit={onEdit} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+    const [isShowChild, setIsShowChild] = useState(false);
+
+    const container: CSSProperties = {
+      marginLeft: marginLeft + "em",
+    };
+
+    const main: CSSProperties = {
+      display: "flex",
+      alignItems: "center",
+    };
+
+    return (
+      <Box sx={container}>
+        <Box sx={main}>
+          <DropdownButton
+            setIsShowChild={setIsShowChild}
+            isShowChild={isShowChild}
+            childrenLength={children.length}
+          />
+          <Typography>{name}</Typography>
+          <Tools nodeId={id} isSelected={isSelected} />
+        </Box>
+
+        <Box>
+          {isShowChild
+            ? children.map(({ id, name, children }: TNode) => (
+                <Node
+                  children={children}
+                  id={id}
+                  name={name}
+                  isSelected={true}
+                  marginLeft={marginLeft}
+                />
+              ))
+            : null}
+        </Box>
+      </Box>
+    );
+  }
+);
