@@ -1,6 +1,11 @@
+import { useEffect, useState } from "react";
 import { Node } from "../node";
 
 export const Root = () => {
+  const [isSelected, setIsSelected] = useState(0);
+
+  useEffect(() => {}, []);
+
   const marginLeft = 0;
 
   const data = {

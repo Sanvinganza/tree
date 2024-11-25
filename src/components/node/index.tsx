@@ -36,7 +36,7 @@ export const Node = memo(
             childrenLength={children.length}
           />
           <Typography>{name}</Typography>
-          <Tools nodeId={id} isSelected={isSelected} />
+          <Tools nodeId={id} isSelected={isSelected} name={name} />
         </Box>
 
         <Box>

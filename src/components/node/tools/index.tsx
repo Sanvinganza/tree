@@ -3,16 +3,14 @@ import { Add } from "./add";
 import { Delete } from "./delete";
 import { Edit } from "./edit";
 
-type TToolsProps = { nodeId: number; isSelected: boolean };
+type TToolsProps = { nodeId: number; isSelected: boolean; name: string };
 
-export const Tools = ({ nodeId, isSelected }: TToolsProps) => {
-  // /api.user.tree.node.delete params: treeName, nodeId
-
+export const Tools = ({ nodeId, isSelected, name }: TToolsProps) => {
   return isSelected ? (
     <Box>
       <Add nodeId={nodeId} />
-      <Edit nodeId={nodeId} />
-      <Delete nodeId={nodeId} />
+      <Edit nodeId={nodeId} name={name} />
+      <Delete nodeId={nodeId} name={name} />
     </Box>
   ) : null;
 };
