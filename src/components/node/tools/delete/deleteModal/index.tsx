@@ -8,6 +8,7 @@ import {
 
 import { useMutation, useQueryClient } from "react-query";
 import { deleteNode } from "../../../../../api/deleteNode";
+import { TResponseError } from "../../add/addModal";
 
 export type TDeleteModalProps = {
   open: boolean;
@@ -28,14 +29,20 @@ export const DeleteModal = ({
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation<any, Error>(() => deleteNode(nodeId), {
+  const mutation = useMutation<any, Error, null>(() => deleteNode(nodeId), {
     onSuccess: () => {
       queryClient.invalidateQueries("tree");
     },
   });
 
   const handleDelete = () => {
-    mutation.mutate();
+    mutation.mutate(null, {
+      onSuccess: (data) => {
+        if (data.status === 500) {
+          data.json().then((res: TResponseError) => alert(res.data.message));
+        }
+      },
+    });
 
     setOpen(false);
   };

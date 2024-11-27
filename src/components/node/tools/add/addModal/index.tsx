@@ -17,8 +17,16 @@ export type TAddModalProps = {
   nodeId: number;
 };
 
+export type TResponseError = {
+  id: string;
+  type: "Secure";
+  data: {
+    message: string;
+  };
+};
+
 export const AddModal = ({ open, setOpen, nodeId }: TAddModalProps) => {
-  const ref = useRef<HTMLInputElement | null>();
+  const ref = useRef<HTMLInputElement | null>(null);
 
   const handleClose = () => {
     setOpen(false);
@@ -44,9 +52,18 @@ export const AddModal = ({ open, setOpen, nodeId }: TAddModalProps) => {
   );
 
   const handleAdd = () => {
-    mutation.mutate({
-      nodeName: ref.current?.value || "",
-    });
+    mutation.mutate(
+      {
+        nodeName: ref.current?.value || "",
+      },
+      {
+        onSuccess: (data) => {
+          if (data.status === 500) {
+            data.json().then((res: TResponseError) => alert(res.data.message));
+          }
+        },
+      }
+    );
 
     setOpen(false);
   };

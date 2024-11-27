@@ -4,9 +4,6 @@ import { DeleteModal } from "./deleteModal";
 import { useState } from "react";
 
 export const Delete = ({ nodeId, name }: { nodeId: number; name: string }) => {
-  // api.user.tree.node.delete
-  // params:  nodeId, treeName
-
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return name !== "Root" ? (
