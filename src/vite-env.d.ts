@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 interface ImportMetaEnv {
-  readonly VITE_TREE_NAME: string;
+  readonly VITE_TREE_ID: string;
 }
 
 interface ImportMeta {

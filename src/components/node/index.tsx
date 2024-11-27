@@ -11,19 +11,13 @@ export type TNode = {
 };
 
 type TNodeProps = TNode & {
-  setIsSelectedNodeId: (isSelectedNodeId: number) => void;
-  isSelectedNodeId: number;
+  setSelectedNodeId: (selectedNodeId: number) => void;
+  selectedNodeId: number;
 };
 
 export const Node = memo(
-  ({
-    id,
-    name,
-    children,
-    isSelectedNodeId,
-    setIsSelectedNodeId,
-  }: TNodeProps) => {
-    const [isShowChild, setIsShowChild] = useState(false);
+  ({ id, name, children, selectedNodeId, setSelectedNodeId }: TNodeProps) => {
+    const [isShowChildes, setIsShowChildes] = useState<boolean>(false);
 
     const container: CSSProperties = {
       marginLeft: "1em",
@@ -32,37 +26,39 @@ export const Node = memo(
     const main: CSSProperties = {
       display: "flex",
       alignItems: "center",
-      backgroundColor: isSelectedNodeId === id ? "#eeeff8" : "transparent",
+      backgroundColor: selectedNodeId === id ? "#eeeff8" : "transparent",
+    };
+
+    const text: CSSProperties = { padding: "8px 0" };
+
+    const handleClickOnNode = () => {
+      if (selectedNodeId !== id) {
+        setSelectedNodeId(id);
+      }
     };
 
     return (
       <Box sx={container}>
-        <Box
-          sx={main}
-          onClick={() => {
-            if (isSelectedNodeId !== id) {
-              setIsSelectedNodeId(id);
-            }
-          }}>
+        <Box sx={main} onClick={handleClickOnNode}>
           <DropdownButton
-            setIsShowChild={setIsShowChild}
-            isShowChild={isShowChild}
+            setIsShowChildes={setIsShowChildes}
+            isShowChildes={isShowChildes}
             childrenLength={children.length}
           />
-          <Typography sx={{ padding: "8px 0" }}>{name}</Typography>
-          <Tools nodeId={id} isSelected={isSelectedNodeId === id} name={name} />
+          <Typography sx={text}>{name}</Typography>
+          <Tools nodeId={id} isSelected={selectedNodeId === id} name={name} />
         </Box>
 
         <Box>
-          {isShowChild
+          {isShowChildes
             ? children.map(({ id, name, children }: TNode) => (
                 <Node
                   key={id}
                   children={children}
                   id={id}
                   name={name}
-                  isSelectedNodeId={isSelectedNodeId}
-                  setIsSelectedNodeId={setIsSelectedNodeId}
+                  selectedNodeId={selectedNodeId}
+                  setSelectedNodeId={setSelectedNodeId}
                 />
               ))
             : null}

@@ -40,11 +40,10 @@ export const DeleteModal = ({
       onSuccess: (data) => {
         if (data.status === 500) {
           data.json().then((res: TResponseError) => alert(res.data.message));
+          setOpen(false);
         }
       },
     });
-
-    setOpen(false);
   };
 
   return (

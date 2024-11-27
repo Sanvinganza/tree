@@ -3,22 +3,22 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 
 type TDropdownButtonProps = {
-  setIsShowChild: (isShowChild: boolean) => void;
-  isShowChild: boolean;
+  setIsShowChildes: (isShowChildes: boolean) => void;
+  isShowChildes: boolean;
   childrenLength: number;
 };
 
 export const DropdownButton = ({
-  setIsShowChild,
-  isShowChild,
+  setIsShowChildes,
+  isShowChildes,
   childrenLength,
 }: TDropdownButtonProps) => {
   return (
     <IconButton
       sx={{ width: "1em", height: "1em" }}
-      onClick={() => setIsShowChild(!isShowChild)}>
+      onClick={() => setIsShowChildes(!isShowChildes)}>
       {childrenLength ? (
-        isShowChild ? (
+        isShowChildes ? (
           <KeyboardArrowDownOutlinedIcon />
         ) : (
           <KeyboardArrowRightOutlinedIcon />
