@@ -60,18 +60,22 @@ export const RenameModal = ({ open, setOpen, nodeId }: TEditModalProps) => {
       aria-describedby="alert-dialog-description">
       <DialogTitle>Rename</DialogTitle>
       <DialogContent>
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="name"
-          name="email"
-          label="Node name"
-          type="text"
-          fullWidth
-          variant="standard"
-          inputRef={ref}
-        />
+        {mutation.isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="email"
+            label="Node name"
+            type="text"
+            fullWidth
+            variant="standard"
+            inputRef={ref}
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={handleClose}>

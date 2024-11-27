@@ -54,7 +54,13 @@ export const DeleteModal = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description">
       <DialogTitle>Delete</DialogTitle>
-      <DialogContent>Do you want to delete {name}?</DialogContent>
+      <DialogContent>
+        {mutation.isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          `Do you want to delete ${name}?`
+        )}
+      </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={handleClose}>
           CANCEL

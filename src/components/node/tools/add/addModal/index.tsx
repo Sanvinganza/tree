@@ -60,12 +60,12 @@ export const AddModal = ({ open, setOpen, nodeId }: TAddModalProps) => {
         onSuccess: (data) => {
           if (data.status === 500) {
             data.json().then((res: TResponseError) => alert(res.data.message));
+          } else {
+            setOpen(false);
           }
         },
       }
     );
-
-    setOpen(false);
   };
 
   return (
@@ -75,19 +75,24 @@ export const AddModal = ({ open, setOpen, nodeId }: TAddModalProps) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description">
       <DialogTitle>Add</DialogTitle>
+
       <DialogContent>
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="name"
-          name="email"
-          label="Node name"
-          type="text"
-          fullWidth
-          variant="standard"
-          inputRef={ref}
-        />
+        {mutation.isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="email"
+            label="Node name"
+            type="text"
+            fullWidth
+            variant="standard"
+            inputRef={ref}
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={handleClose}>
