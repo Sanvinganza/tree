@@ -60,8 +60,8 @@ export const AddModal = ({ open, setOpen, nodeId }: TAddModalProps) => {
         onSuccess: (data) => {
           if (data.status === 500) {
             data.json().then((res: TResponseError) => alert(res.data.message));
-            setOpen(false);
           }
+          setOpen(false);
         },
       }
     );
